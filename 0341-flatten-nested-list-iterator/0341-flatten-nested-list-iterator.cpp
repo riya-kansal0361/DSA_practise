@@ -18,16 +18,16 @@
 
 class NestedIterator {
 public:
-    stack<NestedInteger> st;
+    stack<NestedInteger*> st;
     NestedIterator(vector<NestedInteger> &nestedList) {
         int n = nestedList.size();
         for(int i=n-1;i>=0;i--){
-            st.push(nestedList[i]);
+            st.push(&nestedList[i]);
         }
     }
     
     int next() {
-        int num = st.top().getInteger();
+        int num = st.top()->getInteger();
         st.pop();
         
         return num;
@@ -37,12 +37,12 @@ public:
         if(st.empty()) return false;
         
         while(!st.empty()){
-            NestedInteger obj = st.top();
-            if(obj.isInteger()) return true;
+            NestedInteger* obj = st.top();
+            if(obj->isInteger()) return true;
             st.pop();
-            vector<NestedInteger> curr = obj.getList();
+            vector<NestedInteger> &curr = obj->getList();
             for(int i=curr.size()-1;i>=0;i--){
-                st.push(curr[i]);
+                st.push(&curr[i]);
             }
         }
         return false;
