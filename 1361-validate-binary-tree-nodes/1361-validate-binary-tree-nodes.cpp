@@ -1,65 +1,46 @@
 class Solution {
 public:
+    vector<int> parent;
+    int components;
+    int find(int x){
+        if(x == parent[x]) return x;
+        
+        return parent[x] = find(parent[x]);
+    }
+    bool Union(int node, int child){
+        if(find(child) != child){
+            return false;
+        }
+        
+        if(find(node) == child){
+            return false;
+        }
+        parent[child] = node;
+        components--;
+        return true;
+    }
     bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
-        unordered_map<int,vector<int>> adj;
-        unordered_map<int,int> child_to_parent;
+        components = n;
+        parent.resize(n);
+        
+        for(int i=0;i<n;i++){
+            parent[i] = i;
+        }
         
         for(int i=0;i<n;i++){
             int node = i;
+            int lc = leftChild[i];
+            int rc = rightChild[i];
             
-            int leftc = leftChild[node];
-            
-            if(leftc != -1){
-                adj[node].push_back(leftc);
-                
-                if(child_to_parent.find(leftc) != child_to_parent.end()){
-                    return false;
-                }
-                child_to_parent[leftc] = node;
+            if(lc != -1 && Union(node,lc) == false){
+                return false;
             }
             
-            int rightc = rightChild[node];
-            
-            if(rightc != -1){
-                adj[node].push_back(rightc);
-                
-                if(child_to_parent.find(rightc) != child_to_parent.end()){
-                    return false;
-                }
-                child_to_parent[rightc] = node;
+            if(rc != -1 && Union(node,rc) == false){
+                return false;
             }
+            
         }
-            
-            int root = -1;
-            for(int i=0;i<n;i++){
-                if(child_to_parent.find(i) == child_to_parent.end()){
-                    if(root != -1) return false;
-                    
-                    root = i;
-                }
-            }
-            
-            if(root == -1) return false;
-        
-        queue<int> q;
-        int count=0;
-        vector<bool> visited(n,false);
-        
-        q.push(root);
-        visited[root] = true;
-        count++;
-        
-        while(!q.empty()){
-            int curr = q.front();
-            q.pop();
-            
-            for(int &v : adj[curr]){
-                visited[v] = true;
-                count++;
-                q.push(v);
-            }
-        }
-        
-        return count == n;
+        return components == 1;
     }
 };
