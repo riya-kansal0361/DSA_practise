@@ -14,10 +14,12 @@ public:
         //     count++;
         // }
         
-        while(n){
-            count += (n%2);
-            n = n/2;
-        }
-        return count;
+        // while(n){
+        //     count += (n%2);
+        //     n = n/2;
+        // }
+        // return count;
+        
+        return __builtin_popcount(n);
     }
 };
