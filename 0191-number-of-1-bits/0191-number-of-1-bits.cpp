@@ -9,9 +9,14 @@ public:
         //     }
         // }
         
+        // while(n){
+        //     n = (n & (n-1));
+        //     count++;
+        // }
+        
         while(n){
-            n = (n & (n-1));
-            count++;
+            count += (n%2);
+            n = n/2;
         }
         return count;
     }
