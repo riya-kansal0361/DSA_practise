@@ -1,14 +1,52 @@
-
-#include<algorithm>
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
-        int lb = lower_bound(nums.begin(), nums.end(),target) - nums.begin();
-        
-        if(lb == nums.size() || nums[lb] != target){
-            return {-1,-1};
+    int first(vector<int>& nums, int target){
+        int n = nums.size();
+        int result = -1;
+        int low = 0;
+        int high = n-1;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            
+            if(nums[mid] == target){
+                result = mid;
+                high = mid-1;
+            }
+            else if(nums[mid] > target){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
         }
-        int ub = upper_bound(nums.begin(), nums.end(), target) - nums.begin();
-        return {lb, ub-1};
+        return result;
+    }
+    
+    int last(vector<int>& nums, int target){
+        int n = nums.size();
+        int result = -1;
+        int low = 0;
+        int high = n-1;
+        while(low<=high){
+            int mid = low + (high-low)/2;
+            
+            if(nums[mid] == target){
+                result = mid;
+                low = mid+1;
+            }
+            else if(nums[mid] > target){
+                high = mid-1;
+            }
+            else{
+                low = mid+1;
+            }
+        }
+        return result;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = first(nums,target);
+        int h = last(nums,target);
+        
+        return {l,h};
     }
 };
