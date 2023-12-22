@@ -4,21 +4,20 @@ public:
         int n = s.length();
         
         int result = INT_MIN;
-        
-        int ones = count(s.begin(), s.end(), '1');
-        
+                
         int zeros = 0;
-        int left_ones = 0;
+        int ones = 0;
         
         for(int i=0;i<=n-2;i++){
             if(s[i] == '0') zeros++;
-            else left_ones++;
+            else ones++;
             
-            int right_ones = ones - left_ones;
             
-            result = max(result, zeros + right_ones);
+            result = max(result, zeros - ones);
         }
         
-        return result;
+        if(s[n-1] == '1') ones++;
+        
+        return result + ones;
     }
 };
